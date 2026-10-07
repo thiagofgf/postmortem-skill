@@ -1,0 +1,43 @@
+{
+  "skill_name": "postmortem",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Create the first postmortem for a production incident where one screenshot comparison exposed two unrelated failures: archived messages were still syncing to the mobile app, while a newly created project never appeared in the desktop client. We have migrations, database tests, service logs, production releases, and several hypotheses that were later falsified. Produce the record and index entry, and say which ADR/FDR/story records need separate updates.",
+      "expected_output": "A blameless Draft PM-NNN evidence skeleton with two independent incident tracks, unresolved mechanisms represented as probes rather than plausible causal chains, required sections, generic related-record follow-ups, and one matching index row. It must not invent source contents or identifiers and must not replace ADR/FDR/story records.",
+      "assertions": [
+        "Creates or proposes exactly one PM-NNN postmortem record and one matching index row.",
+        "Separates the archived-message leakage and the missing project symptoms into two incident tracks without forcing one explanation; each root cause is either evidence-backed or explicitly unresolved with the probe needed to decide it.",
+        "Uses evidence-skeleton failure chains rather than inventing query, filtering, event, database, or client mechanisms that the prompt did not supply.",
+        "Includes the required postmortem sections for impact, detection, timeline, contributing factors, missed detection, resolution, data repair, production verification, controls, follow-ups, decisions, and evidence.",
+        "Makes no unsupported negative or absolute claims about impact, alerts, logs, repair, rollout, or affected data.",
+        "Does not invent migration, PR, release, ADR, FDR, story, runbook, file, or test identifiers when their contents were not supplied.",
+        "Keeps ADR, FDR, story, and runbook updates as separate generic follow-ups rather than replacing them with the postmortem.",
+        "Uses blameless system language and does not name an individual as the root cause."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our staging migration nearly exposed private files because a privileged database query bypassed row-level security, but the pre-deploy validation job failed before deployment and no user was affected. Audit the evidence and write a near-miss postmortem if it meets the threshold. Include potential impact, detection, and controls without claiming a production outage.",
+      "expected_output": "A near-miss postmortem that explicitly states no user impact, describes credible potential impact, identifies the failed gate and first failing boundary, remains blameless, and requires evidence before Final status.",
+      "assertions": [
+        "Explicitly states that no user impact occurred and describes credible potential impact without claiming a production outage.",
+        "Classifies the event as a near miss that meets the postmortem threshold and states why it qualifies.",
+        "Uses Draft status or otherwise refuses Final status because source evidence and release verification were not supplied.",
+        "Identifies the pre-deploy validation job as the detection/control boundary and distinguishes detection from mitigation.",
+        "Includes evidence gaps and blameless contributing factors."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We changed our preferred database from MySQL to Postgres for all services. Please document the decision and write the migration runbook.",
+      "expected_output": "The skill should classify this as ADR plus runbook work, not create a postmortem, and explain the record-type boundary.",
+      "assertions": [
+        "Does not create or recommend a postmortem for the database preference decision.",
+        "Classifies the cross-cutting database choice as an ADR.",
+        "Classifies operational migration steps as a runbook.",
+        "Explains why ADR/runbook are separate from postmortem scope."
+      ]
+    }
+  ]
+}
